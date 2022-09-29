@@ -1,5 +1,6 @@
 import express from 'express';
 import 'dotenv/config';
+import cors from 'cors';
 
 class Server{
     constructor(){
@@ -16,6 +17,9 @@ class Server{
 
     middlewares(){
 
+        // CORS
+        this.app.use(cors());
+
         // Public directory
         this.app.use(express.static('public'));
 
@@ -25,7 +29,24 @@ class Server{
 
     routes(){
         this.app.get('/api', (req, res) => {
-            res.json('Hello World!!');
+            res.json({
+                msg:'get API'
+            });
+        });
+        this.app.post('/api', (req, res) => {
+            res.json({
+                msg:'post API'
+            });
+        });
+        this.app.put('/api', (req, res) => {
+            res.json({
+                msg:'put API'
+            });
+        });
+        this.app.delete('/api', (req, res) => {
+            res.json({
+                msg:'delete API'
+            });
         });
     }
 
