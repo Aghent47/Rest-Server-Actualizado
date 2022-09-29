@@ -4,17 +4,28 @@ import 'dotenv/config';
 class Server{
     constructor(){
         this.app = express();
-
-        this.app.use(express.static('public'));
-        this.app.use(express.json());
-
         this.port = process.env.PORT || 3001;
+
+        // Middlewares
+        this.middlewares();
+
+        // Routes
         this.routes();
+
     };
 
+    middlewares(){
+
+        // Public directory
+        this.app.use(express.static('public'));
+
+        // Read and parse body
+        this.app.use(express.json());
+    }
+
     routes(){
-        this.app.get('/', (req, res) => {
-            res.send({ message: 'Hello World!!' });
+        this.app.get('/api', (req, res) => {
+            res.json('Hello World!!');
         });
     }
 
