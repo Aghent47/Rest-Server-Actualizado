@@ -1,7 +1,7 @@
 import express from 'express';
 import 'dotenv/config';
 import cors from 'cors';
-
+import router from '../routes/user.js';
 class Server{
     constructor(){
         this.app = express();
@@ -28,26 +28,7 @@ class Server{
     }
 
     routes(){
-        this.app.get('/api', (req, res) => {
-            res.json({
-                msg:'get API'
-            });
-        });
-        this.app.post('/api', (req, res) => {
-            res.json({
-                msg:'post API'
-            });
-        });
-        this.app.put('/api', (req, res) => {
-            res.json({
-                msg:'put API'
-            });
-        });
-        this.app.delete('/api', (req, res) => {
-            res.json({
-                msg:'delete API'
-            });
-        });
+       this.app.use('/api/usuarios', router );
     }
 
     listen(){
