@@ -4,7 +4,7 @@ const router = express.Router();
 
 router.get('/', usuarios.get);
 router.post('/', usuarios.post);
-router.put('/', usuarios.put);
+router.put('/:id', usuarios.put);
 router.delete('/', usuarios.delete);
 router.patch('/', usuarios.patch);
 

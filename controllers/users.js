@@ -1,20 +1,32 @@
 const usuarios = {};
 
 usuarios.get = (req, res) => {
+    const {q,name = 'No Name', apiKey} = req.query;
+
     res.json({
-        msg:'get API - Controlador'
+        msg:'get API - Controlador',
+        q,
+        name,
+        apiKey
     });
 }
 
 usuarios.post = (req, res) => {
+    const {name, age} = req.body;
     res.json({
-        msg:'post API - Controlador'
+        msg:'post API - Controlador',
+        name,
+        age
     });
 }
 
 usuarios.put = (req, res) => {
+
+    const { id } = req.params;
+
     res.json({
-        msg:'put API - Controlador'
+        msg:'put API - Controlador',
+        id
     });
 }
 
