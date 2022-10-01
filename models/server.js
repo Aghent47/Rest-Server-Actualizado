@@ -1,12 +1,12 @@
 import express from 'express';
 import 'dotenv/config';
 import cors from 'cors';
-import router from '../routes/user.js';
+import router from '../routes/users.js';
 class Server{
     constructor(){
         this.app = express();
         this.port = process.env.PORT || 3001;
-
+        this.usuariosPath = '/api/usuarios';
         // Middlewares
         this.middlewares();
 
@@ -28,7 +28,7 @@ class Server{
     }
 
     routes(){
-       this.app.use('/api/usuarios', router );
+       this.app.use( this.usuariosPath, router );
     }
 
     listen(){
