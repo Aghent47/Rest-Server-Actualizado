@@ -2,7 +2,7 @@ import express from 'express';
 import 'dotenv/config';
 import cors from 'cors';
 import router from '../routes/users.js';
-class Server{
+export class Server{
     constructor(){
         this.app = express();
         this.usuariosPath = '/api/usuarios';
@@ -37,5 +37,3 @@ class Server{
     }
 
 }
-
-export default Server;
