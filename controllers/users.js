@@ -1,6 +1,8 @@
 import { response, request } from "express";
-const usuarios = {};
+import bcryptjs from 'bcryptjs';
 import {User} from '../models/user.js';
+
+const usuarios = {};
 
 usuarios.get = (req = request, res = response) => {
     const {q,name = 'No Name', apiKey} = req.query;
@@ -15,10 +17,17 @@ usuarios.get = (req = request, res = response) => {
 
 usuarios.post = async (req, res) => {
 
-    // const {name, age} = req.body;
+    const {name, mail, password, rol} = req.body;
 
-    const body = req.body;
-    const usuario = new User( body );
+    // const body = req.body;
+    const usuario = new User({name, mail, password, rol});
+    // verificar si el correo existe
+
+    // Encriptar la contraseña HASS
+    const salt = bcryptjs.genSaltSync();
+    usuario.password = bcryptjs.hashSync(password, salt);
+
+    // Guardar en BD
     await usuario.save();
     res.json({
         msg:'post API - Controlador',
