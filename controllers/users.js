@@ -1,6 +1,8 @@
+import { response, request } from "express";
 const usuarios = {};
+import {User} from '../models/user.js';
 
-usuarios.get = (req, res) => {
+usuarios.get = (req = request, res = response) => {
     const {q,name = 'No Name', apiKey} = req.query;
 
     res.json({
@@ -11,12 +13,16 @@ usuarios.get = (req, res) => {
     });
 }
 
-usuarios.post = (req, res) => {
-    const {name, age} = req.body;
+usuarios.post = async (req, res) => {
+
+    // const {name, age} = req.body;
+
+    const body = req.body;
+    const usuario = new User( body );
+    await usuario.save();
     res.json({
         msg:'post API - Controlador',
-        name,
-        age
+        usuario
     });
 }
 
