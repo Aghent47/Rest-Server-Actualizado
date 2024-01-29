@@ -23,6 +23,9 @@ router.post('/',[
 ], usuarios.post);
 
 router.put('/:id', usuarios.put);
+
+
+
 router.delete('/', usuarios.delete);
 router.patch('/', usuarios.patch);
 
