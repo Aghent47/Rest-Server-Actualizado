@@ -4,14 +4,14 @@ import {User} from '../models/user.js';
 
 const usuarios = {};
 
-usuarios.get = (req = request, res = response) => {
-    const {q,name = 'No Name', apiKey} = req.query;
+usuarios.get = async (req = request, res = response) => {
 
+    const {limit = 6, desde = 0} = req.query;
+    const usuarios = await User.find()
+    .skip(Number(desde))
+    .limit(Number(limit));
     res.json({
-        msg:'get API - Controlador',
-        q,
-        name,
-        apiKey
+       usuarios
     });
 }
 
@@ -49,7 +49,7 @@ usuarios.put = async (req, res) => {
     const usuario = await User.findByIdAndUpdate(id, resto);
 
     res.json({
-        msg:'put API - Controlador',
+        // msg:'put API - Controlador',
         usuario,
     });
 }
