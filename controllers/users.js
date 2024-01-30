@@ -37,8 +37,7 @@ usuarios.post = async (req, res) => {
 usuarios.put = async (req, res) => {
 
     const { id } = req.params;
-    const {password, google, mail, ...resto } = req.body;
-
+    const {_id, password, google, mail, ...resto } = req.body;
     //Validar Id Contra BD
 
     if(password){
@@ -54,8 +53,6 @@ usuarios.put = async (req, res) => {
         usuario,
     });
 }
-
-
 usuarios.delete = (req, res) => {
     res.json({
         msg:'delete API - Controlador'
