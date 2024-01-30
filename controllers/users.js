@@ -66,25 +66,15 @@ usuarios.put = async (req, res) => {
         usuario,
     });
 }
-usuarios.delete = async (req, res) => {
-
-    const { id } = req.params;
-
-    // fisicamente lo borramos NO recomendable por perdida referencial
-    // const usuario = await User.findByIdAndDelete(id); 
-
-    const usuario = await User.findByIdAndUpdate(id, { estado: false });
-
+usuarios.delete = (req, res) => {
     res.json({
-        
-        usuario,
+        msg: 'delete API - Controlador'
     });
 }
 
 usuarios.patch = (req, res) => {
     res.json({
-        msg: 'patch API - Controlador',
-        
+        msg: 'patch API - Controlador'
     });
 }
 export default usuarios;
