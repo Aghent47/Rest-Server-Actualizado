@@ -2,11 +2,9 @@ import express from 'express';
 import usuarios from '../controllers/users.js';
 import { check } from 'express-validator';
 
-import { validarCampos } from '../middlewares/validar_campos.js';
-import { validarJWT } from '../middlewares/validar-jwt.js';
-
+import { validarCampos, validarJWT, tieneRole, esAdminRole } from '../middlewares/index.js';
 import { emailExiste, esRolevalido, existeUserById } from '../helpers/db_validators.js';
-import { esAdminRole, tieneRole } from '../middlewares/validar-roles.js';
+
 const router = express.Router();
 
 router.get('/', usuarios.get);
