@@ -36,9 +36,6 @@ router.delete('/:id',[
 
 ], usuarios.delete);
 
-
-
-
 router.patch('/', usuarios.patch);
 
 export default router;
