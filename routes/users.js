@@ -1,9 +1,11 @@
 import express from 'express';
 import usuarios from '../controllers/users.js';
 import { check } from 'express-validator';
-import { validarCampos } from '../middlewares/validar_campos.js';
-import { emailExiste, esRolevalido, existeUserById } from '../helpers/db_validators.js';
 
+import { validarCampos } from '../middlewares/validar_campos.js';
+import { validarJWT } from '../middlewares/validar-jwt.js';
+
+import { emailExiste, esRolevalido, existeUserById } from '../helpers/db_validators.js';
 const router = express.Router();
 
 router.get('/', usuarios.get);
@@ -30,6 +32,7 @@ router.put('/:id',[
 ], usuarios.put);
 
 router.delete('/:id',[
+    validarJWT,
     check('id','No es un ID válido').isMongoId(),
     check('id').custom(existeUserById),
     validarCampos,
