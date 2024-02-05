@@ -69,15 +69,13 @@ usuarios.put = async (req, res) => {
 usuarios.delete = async (req, res) => {
 
     const { id } = req.params;
-
-    // fisicamente lo borramos NO recomendable por perdida referencial
-    // const usuario = await User.findByIdAndDelete(id); 
-
     const usuario = await User.findByIdAndUpdate(id, { estado: false });
 
+    // const usuarioAutenticado = req.usuario;
+
     res.json({
-        
         usuario,
+        // usuarioAutenticado quien hizo la eliminación
     });
 }
 
