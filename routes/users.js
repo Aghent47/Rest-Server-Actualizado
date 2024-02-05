@@ -6,6 +6,7 @@ import { validarCampos } from '../middlewares/validar_campos.js';
 import { validarJWT } from '../middlewares/validar-jwt.js';
 
 import { emailExiste, esRolevalido, existeUserById } from '../helpers/db_validators.js';
+import { esAdminRole } from '../middlewares/validar-roles.js';
 const router = express.Router();
 
 router.get('/', usuarios.get);
@@ -33,6 +34,7 @@ router.put('/:id',[
 
 router.delete('/:id',[
     validarJWT,
+    esAdminRole,
     check('id','No es un ID válido').isMongoId(),
     check('id').custom(existeUserById),
     validarCampos,
