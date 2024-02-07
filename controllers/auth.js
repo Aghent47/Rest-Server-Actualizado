@@ -54,4 +54,15 @@ const login = async (req, res = response) => {
 
 }
 
+const googleSingIn = async (req, res = response) => {
+
+    const { id_token } = req.body; // obteniendo el id_token en el backend
+
+    res.json({
+        msg: 'googleSingIn',
+        id_token
+    });
+}
+
 export default login;
+export { googleSingIn };

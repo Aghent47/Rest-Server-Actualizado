@@ -1,6 +1,6 @@
 import express from 'express';
 import { check } from 'express-validator';
-import login from '../controllers/auth.js';
+import login, { googleSingIn } from '../controllers/auth.js';
 import { validarCampos } from '../middlewares/validar_campos.js';
 
 const router = express.Router();
@@ -10,5 +10,10 @@ router.post('/login',[
     check('password', 'The password is required').not().isEmpty(),
     validarCampos
 ], login );
+
+router.post('/google',[
+    check('id_token', 'The id_token the google is required').not().isEmpty(),
+    
+], googleSingIn );
 
 export default router;
