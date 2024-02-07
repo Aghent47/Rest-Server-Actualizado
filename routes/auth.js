@@ -1,6 +1,6 @@
 import express from 'express';
 import { check } from 'express-validator';
-import login, { googleSingIn } from '../controllers/auth.js';
+import  {login, googleSingIn } from '../controllers/auth.js';
 import { validarCampos } from '../middlewares/validar_campos.js';
 
 const router = express.Router();

@@ -2,8 +2,9 @@ import { response } from "express";
 import { User } from "../models/user.js";
 import bcrypt from 'bcryptjs';
 import { generarJWT } from "../helpers/generar-jwt.js";
+import { googleVerify } from "../helpers/google-verify.js";
 
-const login = async (req, res = response) => {
+export const login = async (req, res = response) => {
 
     const { mail, password } = req.body;
 
@@ -44,7 +45,7 @@ const login = async (req, res = response) => {
             usuario,
             token
         });
-        
+
     } catch (err) {
         console.log(err);
         return res.status(500).json({
@@ -54,15 +55,24 @@ const login = async (req, res = response) => {
 
 }
 
-const googleSingIn = async (req, res = response) => {
+export const googleSingIn = async (req, res = response) => {
 
     const { id_token } = req.body; // obteniendo el id_token en el backend
 
-    res.json({
-        msg: 'googleSingIn',
-        id_token
-    });
-}
+    try {
 
-export default login;
-export { googleSingIn };
+        const googleUserData = await googleVerify(id_token);
+        console.log(googleUserData);
+
+        res.json({
+            msg: 'googleSingIn',
+            id_token
+        });
+    } catch (error) {
+        res.status(400).json({
+            msg: 'Token de google no es valido'
+        });
+    }
+
+
+}
