@@ -60,14 +60,43 @@ export const googleSingIn = async (req, res = response) => {
     const { id_token } = req.body; // obteniendo el id_token en el backend
 
     try {
+      
 
-        const googleUserData = await googleVerify(id_token);
-        console.log(googleUserData);
+        const {name, img, mail} = await googleVerify(id_token);
+
+        let usuario = await User.findOne({ mail });
+        
+        if (!usuario) {
+            // tengo que crearlo
+            const data = {
+                name,
+                mail,
+                rol: 'USER_ROLE',
+                password: '123456',
+                img,
+                google: true
+            };
+
+            usuario = new User(data);
+            await usuario.save();
+        }
+
+        // Si el usuario en DB tiene estado en false
+
+        if (!usuario.estado) {
+            return res.status(401).json({
+                msg: 'Hable con el administrador, usuario bloqueado'
+            });
+        }
+
+        // Generar el JWT
+        const token = await generarJWT(usuario.id);
 
         res.json({
-            msg: 'googleSingIn',
-            id_token
+            usuario,
+            token
         });
+        
     } catch (error) {
         res.status(400).json({
             msg: 'Token de google no es valido'
