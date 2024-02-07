@@ -1,14 +1,21 @@
 import express from 'express';
 import 'dotenv/config';
 import cors from 'cors';
-import router from '../routes/users.js';
+import routerUsers from '../routes/users.js';
 import auth from '../routes/auth.js'
+import routerCategorias from '../routes/categorias.js';
+
 import {dbConnection}  from '../database/config.js'; // importar la conexion a la base de datos desde 'database/conf
 export class Server{
     constructor(){
         this.app = express();
-        this.usuariosPath = '/api/usuarios';
-        this.authPath = '/api/auth';
+        
+        this.paths = {
+            auth: '/api/auth',
+            usuarios: '/api/usuarios',
+            categorias: '/api/categorias'
+        }
+
         // conectar a la base de datos
         this.conectarDB();
 
@@ -37,8 +44,9 @@ export class Server{
     }
 
     routes(){
-        this.app.use(this.authPath, auth),
-        this.app.use( this.usuariosPath, router );
+        this.app.use( this.paths.auth, auth),
+        this.app.use( this.paths.usuarios, routerUsers );
+        this.app.use( this.paths.categorias, routerCategorias );
     }
 
     listen(){
