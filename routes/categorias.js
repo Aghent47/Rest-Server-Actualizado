@@ -3,23 +3,21 @@ import { check } from "express-validator";
 
 import { validarCampos } from '../middlewares/validar_campos.js';
 import { validarJWT } from '../middlewares/validar-jwt.js';
-import { crearCategoria, obtenerCategorias } from "../controllers/categorias.js";
+import { actualizarCategoria, crearCategoria, getCategoriaById, getCategorias } from "../controllers/categorias.js";
+import { esRolevalido, existeCategoriaById } from "../helpers/db_validators.js";
 
 const router = Router();
 
 // obtener todas las categorias - path publico
 router.get('/',[
-    validarCampos
-] , obtenerCategorias);
+] , getCategorias);
 
 // Obtener una categoria por id - path publico
-router.get('/:id', (req, res) => {
-    res.json({
-        msg: 'get API - categorias por id'
-        
-    });
-
-});
+router.get('/:id', [
+    check('id','No es un ID válido de mongo').isMongoId(),
+    check('id').custom(existeCategoriaById),
+    validarCampos,
+],getCategoriaById);
 
 // Crear una nueva categoria - privado - cualquier persona con un token valido
 router.post('/',[
@@ -29,19 +27,19 @@ router.post('/',[
 ], crearCategoria );
 
 // Actualizar - privado - cualquier persona con un token valido
-router.put('/:id', (req, res) => {
-    res.json({
-        msg: 'Put API - actualizar Categoria'
-        
-    });
+router.put('/:id', [
+    validarJWT,
+    check('id','No es un ID válido').isMongoId(),
+    check('id').custom(existeCategoriaById),
 
-});
+    // validarCampos,
+], actualizarCategoria );
 
 // Borrar una categoria - Admin
 router.delete('/:id', (req, res) => {
     res.json({
         msg: 'Delete API - Eliminar Categoria'
-     
+
     });
 
 });

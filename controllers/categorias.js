@@ -27,7 +27,7 @@ export const crearCategoria = async (req, res = response) => {
 
 }
 
-export const obtenerCategorias = async (req= request, res = response) => {
+export const getCategorias = async (req = request, res = response) => {
     const {limit = 5, desde = 0} = req.query;
     const query = {estado: true};
 
@@ -35,7 +35,7 @@ export const obtenerCategorias = async (req= request, res = response) => {
         Categoria.find(query)
         .skip(Number(desde))
         .limit(Number(limit))
-        .populate('usuario'),
+        .populate('usuario', 'name'),
         Categoria.countDocuments({estado: true})
     ]);
    
@@ -45,4 +45,23 @@ export const obtenerCategorias = async (req= request, res = response) => {
         categorias
         
     });
+}
+
+export const getCategoriaById = async ( req = request, res = response) => {
+
+    const { id } = req.params;
+    const categoria = await Categoria.findById(id).populate('usuario', 'name');
+
+    res.json({
+        categoria
+    });
+}
+
+export const actualizarCategoria = async (req = request, res = response) => {
+    
+
+    res.json({
+        msg: 'put API - categorias!',
+    });
+
 }
