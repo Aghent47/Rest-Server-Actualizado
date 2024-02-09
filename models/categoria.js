@@ -10,12 +10,12 @@ const categoriaSchema = Schema({
     estado: {
         type: Boolean,
         default: true,
-        require: true,
+        required: true,
     },
     usuario: {
         type: Schema.Types.ObjectId,
-        ref: 'Usuario',
-        require: true
+        ref: 'User',
+        required: true,
     }
 
 });

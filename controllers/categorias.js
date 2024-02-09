@@ -34,7 +34,8 @@ export const obtenerCategorias = async (req= request, res = response) => {
     const [ categorias, total ] = await Promise.all([
         Categoria.find(query)
         .skip(Number(desde))
-        .limit(Number(limit)),
+        .limit(Number(limit))
+        .populate('usuario'),
         Categoria.countDocuments({estado: true})
     ]);
    
