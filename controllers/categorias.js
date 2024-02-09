@@ -1,7 +1,5 @@
-import { response } from "express";
+import { request, response } from "express";
 import { Categoria } from "../models/index.js";
-
-
 
 export const crearCategoria = async (req, res = response) => {
 
@@ -27,4 +25,23 @@ export const crearCategoria = async (req, res = response) => {
 
     res.status(201).json(categoria);
 
+}
+
+export const obtenerCategorias = async (req= request, res = response) => {
+    const {limit = 5, desde = 0} = req.query;
+    const query = {estado: true};
+
+    const [ categorias, total ] = await Promise.all([
+        Categoria.find(query)
+        .skip(Number(desde))
+        .limit(Number(limit)),
+        Categoria.countDocuments({estado: true})
+    ]);
+   
+    res.json({
+        msg: 'get API - categorias',
+        total,
+        categorias
+        
+    });
 }

@@ -1,20 +1,16 @@
-import { Router } from "express";
+import { Router, request, response } from "express";
 import { check } from "express-validator";
 
 import { validarCampos } from '../middlewares/validar_campos.js';
 import { validarJWT } from '../middlewares/validar-jwt.js';
-import { crearCategoria } from "../controllers/categorias.js";
+import { crearCategoria, obtenerCategorias } from "../controllers/categorias.js";
 
 const router = Router();
 
 // obtener todas las categorias - path publico
-router.get('/', (req, res) => {
-    res.json({
-        msg: 'get API - categorias'
-        
-    });
-
-});
+router.get('/',[
+    validarCampos
+] , obtenerCategorias);
 
 // Obtener una categoria por id - path publico
 router.get('/:id', (req, res) => {
