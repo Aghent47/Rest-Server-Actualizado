@@ -3,7 +3,8 @@ import { Schema, model } from 'mongoose';
 const categoriaSchema = Schema({
     nombre: {
         type: String,
-        required: [true, 'El nombre es obligatorio']
+        required: [true, 'El nombre es obligatorio'],
+        unique: true,
     },
 
     estado: {
@@ -18,4 +19,4 @@ const categoriaSchema = Schema({
     }
 
 });
-export const Role = model('Categoria', categoriaSchema);
+export const Categoria = model('Categoria', categoriaSchema);

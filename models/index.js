@@ -3,7 +3,7 @@ import {Role} from './role.js';
 import {Server} from './server.js';
 import {User} from './user.js';
 
-export {
+export  {
     Categoria,
     Role,
     Server,

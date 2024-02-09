@@ -2,6 +2,8 @@ import { Router } from "express";
 import { check } from "express-validator";
 
 import { validarCampos } from '../middlewares/validar_campos.js';
+import { validarJWT } from '../middlewares/validar-jwt.js';
+import { crearCategoria } from "../controllers/categorias.js";
 
 const router = Router();
 
@@ -24,13 +26,11 @@ router.get('/:id', (req, res) => {
 });
 
 // Crear una nueva categoria - privado - cualquier persona con un token valido
-router.post('/', (req, res) => {
-    res.json({
-        msg: 'Post API - Create Categoria'
-        
-    });
-
-});
+router.post('/',[
+    validarJWT,
+    check('nombre', 'El nombre es obligatorio').not().isEmpty(),
+    validarCampos
+], crearCategoria );
 
 // Actualizar - privado - cualquier persona con un token valido
 router.put('/:id', (req, res) => {
