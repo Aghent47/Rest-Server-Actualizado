@@ -4,7 +4,7 @@ import { check } from "express-validator";
 import { validarCampos } from '../middlewares/validar_campos.js';
 import { validarJWT } from '../middlewares/validar-jwt.js';
 import { actualizarCategoria, borrarCategoria, crearCategoria, getCategoriaById, getCategorias } from "../controllers/categorias.js";
-import { esRolevalido, existeCategoriaById } from "../helpers/db_validators.js";
+import { existeCategoriaById } from "../helpers/db_validators.js";
 import { esAdminRole } from "../middlewares/validar-roles.js";
 
 const router = Router();
