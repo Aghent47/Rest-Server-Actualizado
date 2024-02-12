@@ -80,10 +80,13 @@ export const actulizarProducto = async (req = request, res = response) => {
 
 export const borrarProducto = async (req = request, res = response) => {
     const { id } = req.params;
-    const productoBorrado = await Producto.findByIdAndUpdate(id, {estado: false}, {new: true});
+
+    const productoBorrado = await Producto.findByIdAndUpdate(id, 
+        {estado: false}, { disponible: false}, {new: true});
+
 
     res.json({
         msg: 'Categoria Eliminada con Exito!!',
-        productoBorrado
+        productoBorrado,
     });
 }

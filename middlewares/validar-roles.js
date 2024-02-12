@@ -10,7 +10,7 @@ export const esAdminRole = (req, res = response, next) => {
     }
 
     const {rol, name} = req.usuario;
-    console.log(rol);
+    
     if( rol !== 'ADMIN_ROLE'){
         
         return res.status(401).json({

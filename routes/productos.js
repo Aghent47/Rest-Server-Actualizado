@@ -1,7 +1,7 @@
 import { Router,} from "express";
-import { actulizarProducto, crearProducto, getProductoById, getProductos } from "../controllers/productos.js";
+import { actulizarProducto, borrarProducto, crearProducto, getProductoById, getProductos } from "../controllers/productos.js";
 import { check } from "express-validator";
-import { validarCampos, validarJWT } from "../middlewares/index.js";
+import { esAdminRole, validarCampos, validarJWT } from "../middlewares/index.js";
 import { existeProductoById } from "../helpers/db_validators.js";
 
 const router = Router();
@@ -33,6 +33,16 @@ router.put('/:id', [
     validarCampos
 
 ], actulizarProducto );
+
+// Borrar una producto - Admin
+router.delete('/:id',[
+    validarJWT,
+    esAdminRole,
+    check('id', 'No es un ID valido').isMongoId(),
+    check('id',).custom(existeProductoById),
+    validarCampos
+
+], borrarProducto )
 
 
 export default router;
