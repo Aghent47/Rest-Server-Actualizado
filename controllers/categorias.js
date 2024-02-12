@@ -58,10 +58,29 @@ export const getCategoriaById = async ( req = request, res = response) => {
 }
 
 export const actualizarCategoria = async (req = request, res = response) => {
-    
+
+    const { id } = req.params;
+
+    const { estado, usuario, ...data } = req.body;
+
+    data.nombre = data.nombre.toUpperCase();
+    data.usuario = req.usuario._id;
+
+    const categoria = await Categoria.findByIdAndUpdate(id,data, { new: true });
 
     res.json({
         msg: 'put API - categorias!',
+        categoria
     });
 
+}
+
+export const borrarCategoria = async (req = request, res = response) => {
+    const { id } = req.params;
+    const categoriaBorrada = await Categoria.findByIdAndUpdate(id, {estado: false}, {new: true});
+
+    res.json({
+        msg: 'Categoria Eliminada con Exito!!',
+        categoriaBorrada
+    });
 }

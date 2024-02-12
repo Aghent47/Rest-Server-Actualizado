@@ -3,8 +3,9 @@ import { check } from "express-validator";
 
 import { validarCampos } from '../middlewares/validar_campos.js';
 import { validarJWT } from '../middlewares/validar-jwt.js';
-import { actualizarCategoria, crearCategoria, getCategoriaById, getCategorias } from "../controllers/categorias.js";
+import { actualizarCategoria, borrarCategoria, crearCategoria, getCategoriaById, getCategorias } from "../controllers/categorias.js";
 import { esRolevalido, existeCategoriaById } from "../helpers/db_validators.js";
+import { esAdminRole } from "../middlewares/validar-roles.js";
 
 const router = Router();
 
@@ -29,20 +30,20 @@ router.post('/',[
 // Actualizar - privado - cualquier persona con un token valido
 router.put('/:id', [
     validarJWT,
-    check('id','No es un ID válido').isMongoId(),
+    check('nombre', 'El nombre es obligatorio').not().isEmpty(),
     check('id').custom(existeCategoriaById),
+    validarCampos,
 
-    // validarCampos,
 ], actualizarCategoria );
 
 // Borrar una categoria - Admin
-router.delete('/:id', (req, res) => {
-    res.json({
-        msg: 'Delete API - Eliminar Categoria'
-
-    });
-
-});
+router.delete('/:id', [
+    validarJWT,
+    esAdminRole,
+    check('id','No es un ID válido de mongo').isMongoId(),
+    check('id').custom(existeCategoriaById),
+    validarCampos,
+],borrarCategoria);
 
 
 export default router;

@@ -10,7 +10,8 @@ export const esAdminRole = (req, res = response, next) => {
     }
 
     const {rol, name} = req.usuario;
-    if( rol !== 'ADMIN_ROLE' || rol !== 'SUPER_ROLE'){
+    console.log(rol);
+    if( rol !== 'ADMIN_ROLE' ){
         
         return res.status(401).json({
             msg: `${ name } no es adminitrador - Acceso no autoriado `
