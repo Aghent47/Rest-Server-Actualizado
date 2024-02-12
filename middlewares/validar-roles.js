@@ -11,7 +11,7 @@ export const esAdminRole = (req, res = response, next) => {
 
     const {rol, name} = req.usuario;
     console.log(rol);
-    if( rol !== 'ADMIN_ROLE' ){
+    if( rol !== 'ADMIN_ROLE'){
         
         return res.status(401).json({
             msg: `${ name } no es adminitrador - Acceso no autoriado `
