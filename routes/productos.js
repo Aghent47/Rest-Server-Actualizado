@@ -2,7 +2,7 @@ import { Router,} from "express";
 import { actulizarProducto, borrarProducto, crearProducto, getProductoById, getProductos } from "../controllers/productos.js";
 import { check } from "express-validator";
 import { esAdminRole, validarCampos, validarJWT } from "../middlewares/index.js";
-import { existeProductoById } from "../helpers/db_validators.js";
+import { existeCategoriaById, existeProductoById } from "../helpers/db_validators.js";
 
 const router = Router();
 
@@ -10,6 +10,8 @@ const router = Router();
 router.post('/',[
     validarJWT,
     check('nombre', 'El nombre es obligatorio').not().isEmpty(),
+    check('categoria', 'La categoria es obligatorio').isMongoId(),
+    check('categoria',).custom(existeCategoriaById),
     validarCampos,
 ], crearProducto );
 
@@ -28,6 +30,7 @@ router.get('/:id', [
 // Actualizar - privado - cualquier persona con un token valido
 router.put('/:id', [
     validarJWT,
+    check('id', 'No es un ID valido').isMongoId(),
     check('nombre', 'El nombre es obligatorio').not().isEmpty(),
     check('id',).custom(existeProductoById),
     validarCampos
