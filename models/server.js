@@ -5,6 +5,7 @@ import routerUsers from '../routes/users.js';
 import auth from '../routes/auth.js'
 import routerCategorias from '../routes/categorias.js';
 import routerProductos from '../routes/productos.js';
+import routerBuscar from '../routes/buscar.js';
 
 import {dbConnection}  from '../database/config.js'; // importar la conexion a la base de datos desde 'database/conf
 export class Server{
@@ -12,10 +13,11 @@ export class Server{
         this.app = express();
         
         this.paths = {
-            auth: '/api/auth',
-            usuarios: '/api/usuarios',
+            auth:       '/api/auth',
+            buscar:     '/api/buscar',
+            usuarios:   '/api/usuarios',
             categorias: '/api/categorias',
-            productos: '/api/productos',
+            productos:  '/api/productos',
 
         }
 
@@ -51,6 +53,7 @@ export class Server{
         this.app.use( this.paths.usuarios, routerUsers );
         this.app.use( this.paths.categorias, routerCategorias );
         this.app.use( this.paths.productos, routerProductos );
+        this.app.use( this.paths.buscar, routerBuscar);
     }
 
     listen(){
