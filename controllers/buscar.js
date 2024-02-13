@@ -32,9 +32,54 @@ const buscarUsuarios =  async (termino = '' , res = response) => {
     res.json({
         results: usuarios
     })
-
-
 }
+
+const buscarCategorias =  async (termino = '' , res = response) => {
+
+    const esMongoId = ObjectId.isValid(termino); // si es un id de mongo retorna true
+
+    if (esMongoId) {
+        const categoria = await Categoria.findById(termino);
+        return res.json({
+            results: (categoria) ? [categoria] : []
+        })
+    }
+
+    const regex = new RegExp(termino, 'i');
+
+    const categorias = await Categoria.find({ 
+        $or: [{ nombre: regex }],
+        $and: [{ estado: true }]
+     });
+
+    res.json({
+        results: categorias
+    })
+}
+
+const buscarProductos =  async (termino = '' , res = response) => {
+
+    const esMongoId = ObjectId.isValid(termino); // si es un id de mongo retorna true
+
+    if (esMongoId) {
+        const producto = await Producto.findById(termino).populate('categoria', 'nombre')
+        return res.json({
+            results: (producto) ? [producto] : []
+        })
+    }
+
+    const regex = new RegExp(termino, 'i');
+
+    const productos = await Producto.find({ 
+        $or: [{ nombre: regex }, {descrpcion: regex}],
+        $and: [{ estado: true }]
+     }).populate('categoria', 'nombre')
+
+    res.json({
+        results: productos
+    })
+}
+
 
 
 export const buscar = (req, res = response) => {
@@ -53,10 +98,12 @@ export const buscar = (req, res = response) => {
             break;
 
         case 'categorias':
-
+            buscarCategorias(termino, res);
             break;
 
         case 'productos':
+
+            buscarProductos(termino, res);
 
             break;
 
