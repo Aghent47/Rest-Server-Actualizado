@@ -57,15 +57,15 @@ export const actualizarImagen = async (req, res = response) => {
     }
 
     //Limpiar imagenes previas
-       if(modelo.img){
-            const __dirname = path.dirname(__filename);
-            // borrar imagen del servidor
-            const pathImagen = path.join(__dirname, '../uploads', coleccion, modelo.img);
-            
-            if(fs.existsSync(pathImagen)){
-                 fs.unlinkSync(pathImagen);
-            }
-       }
+    if (modelo.img) {
+        const __dirname = path.dirname(__filename);
+        // borrar imagen del servidor
+        const pathImagen = path.join(__dirname, '../uploads', coleccion, modelo.img);
+
+        if (fs.existsSync(pathImagen)) {
+            fs.unlinkSync(pathImagen);
+        }
+    }
 
     //grabas en BD
     const pathFile = await subirArchivo(req.files, undefined, coleccion);
@@ -83,7 +83,7 @@ export const actualizarImagenCloudinary = async (req, res = response) => {
 
     const { coleccion, id } = req.params;
 
-    let modelo; 
+    let modelo;
 
     switch (coleccion) {
         case 'users':
@@ -108,19 +108,16 @@ export const actualizarImagenCloudinary = async (req, res = response) => {
     }
 
     //Limpiar imagenes previas
-       if(modelo.img){
-            const __dirname = path.dirname(__filename);
-            // borrar imagen del servidor
-            const pathImagen = path.join(__dirname, '../uploads', coleccion, modelo.img);
-            
-            if(fs.existsSync(pathImagen)){
-                 fs.unlinkSync(pathImagen);
-            }
-       }
+    if (modelo.img) {
+        const nombreArr = modelo.img.split('/')
+        const nombre = nombreArr[nombreArr.length - 1]; // para extraer la ultima parte del arrego donde esta el nombre de mi imag
+        const [public_id] = nombre.split('.');
+        cloudinary.v2.uploader.destroy(public_id);
+    }
 
-       //subir imagen a cluodinary
+    //subir imagen a cluodinary
 
-       const { secure_url } = await cloudinary.uploader.upload(req.files.archivo.tempFilePath);
+    const { secure_url } = await cloudinary.uploader.upload(req.files.archivo.tempFilePath);
 
     modelo.img = secure_url;
 
@@ -157,22 +154,22 @@ export const mostrarImagen = async (req, res = response) => {
         default:
             return res.status(500).json({ msg: 'Se me olvido validar esto' });
     }
-        
+
     //Limpiar imagenes previas
     const __dirname = path.dirname(__filename);
 
-       if(modelo.img){
-           
-            // borrar imagen del servidor
-            const pathImagen = path.join(__dirname, '../uploads', coleccion, modelo.img);
-            
-            if(fs.existsSync(pathImagen)){
-               return res.sendFile(pathImagen);
-            }
-       }
+    if (modelo.img) {
 
-       const pathImgDefault = path.join(__dirname, '../assets/no-image.jpg');
-        
-       res.sendFile(pathImgDefault);
-    
+        // borrar imagen del servidor
+        const pathImagen = path.join(__dirname, '../uploads', coleccion, modelo.img);
+
+        if (fs.existsSync(pathImagen)) {
+            return res.sendFile(pathImagen);
+        }
+    }
+
+    const pathImgDefault = path.join(__dirname, '../assets/no-image.jpg');
+
+    res.sendFile(pathImgDefault);
+
 }
