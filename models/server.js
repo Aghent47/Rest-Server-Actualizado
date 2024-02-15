@@ -6,6 +6,7 @@ import auth from '../routes/auth.js'
 import routerCategorias from '../routes/categorias.js';
 import routerProductos from '../routes/productos.js';
 import routerBuscar from '../routes/buscar.js';
+import reuterUploads from '../routes/uploads.js';
 
 import {dbConnection}  from '../database/config.js'; // importar la conexion a la base de datos desde 'database/conf
 export class Server{
@@ -13,11 +14,13 @@ export class Server{
         this.app = express();
         
         this.paths = {
+            // Urls de las rutas
             auth:       '/api/auth',
             buscar:     '/api/buscar',
             usuarios:   '/api/usuarios',
             categorias: '/api/categorias',
             productos:  '/api/productos',
+            uploads:   '/api/uploads',
 
         }
 
@@ -54,6 +57,8 @@ export class Server{
         this.app.use( this.paths.categorias, routerCategorias );
         this.app.use( this.paths.productos, routerProductos );
         this.app.use( this.paths.buscar, routerBuscar);
+        this.app.use( this.paths.uploads, reuterUploads);
+
     }
 
     listen(){
