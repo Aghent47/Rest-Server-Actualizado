@@ -1,7 +1,13 @@
 import { response } from "express";
 import { subirArchivo } from "../helpers/subir-archivo.js";
-
+import { fileURLToPath } from 'url';
+import path from 'path';
+import fs from 'fs';
 import { User, Producto } from "../models/index.js";
+
+
+const __filename = fileURLToPath(import.meta.url);
+
 
 export const cargarArchivo = async (req, res = response) => {
 
@@ -45,6 +51,17 @@ export const actualizarImagen = async (req, res = response) => {
         default:
             return res.status(500).json({ msg: 'Se me olvido validar esto' });
     }
+
+    //Limpiar imagenes previas
+       if(modelo.img){
+            const __dirname = path.dirname(__filename);
+            // borrar imagen del servidor
+            const pathImagen = path.join(__dirname, '../uploads', coleccion, modelo.img);
+            
+            if(fs.existsSync(pathImagen)){
+                 fs.unlinkSync(pathImagen);
+            }
+       }
 
     //grabas en BD
     const pathFile = await subirArchivo(req.files, undefined, coleccion);
