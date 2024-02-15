@@ -100,10 +100,12 @@ export const mostrarImagen = async (req, res = response) => {
         default:
             return res.status(500).json({ msg: 'Se me olvido validar esto' });
     }
-
+        
     //Limpiar imagenes previas
+    const __dirname = path.dirname(__filename);
+
        if(modelo.img){
-            const __dirname = path.dirname(__filename);
+           
             // borrar imagen del servidor
             const pathImagen = path.join(__dirname, '../uploads', coleccion, modelo.img);
             
@@ -112,8 +114,8 @@ export const mostrarImagen = async (req, res = response) => {
             }
        }
 
-    res.json({
-        msg: 'Falta placeholder'
-    });
-
+       const pathImgDefault = path.join(__dirname, '../assets/no-image.jpg');
+        
+       res.sendFile(pathImgDefault);
+    
 }
