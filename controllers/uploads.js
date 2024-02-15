@@ -7,11 +7,16 @@ export const cargarArchivo = async (req, res = response) => {
         res.status(400).json('No files were uploaded.');
         return;
     }
-    
-    const pathFile = await subirArchivo(req.files);
 
-    res.json({
-        Name: pathFile
-    });
+    try {
+        // const pathFile = await subirArchivo(req.files, ['txt', 'pdf'], 'txts');
+        const pathFile = await subirArchivo(req.files, undefined, 'imgs');
+        res.json({
+            Name: pathFile
+        });
 
+    } catch (error) {
+        res.status(400).json(error);
+
+    }
 }
