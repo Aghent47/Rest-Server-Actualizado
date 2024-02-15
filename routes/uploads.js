@@ -1,7 +1,7 @@
 import express from 'express';
 import { check } from 'express-validator';
 import { validarCampos } from '../middlewares/validar_campos.js';
-import { actualizarImagen, cargarArchivo } from '../controllers/uploads.js';
+import { actualizarImagen, cargarArchivo, mostrarImagen } from '../controllers/uploads.js';
 import { coleccionesPermitidas } from '../helpers/db_validators.js';
 import { validarFileSubir } from '../middlewares/validar-archivo.js';
 
@@ -17,5 +17,10 @@ router.put('/:coleccion/:id', [
 
 ], actualizarImagen);
 
+router.get('/:coleccion/:id',[
+   check('id', 'El id debe ser de mongo').isMongoId(),
+   check('coleccion').custom(c => coleccionesPermitidas(c, ['users', 'productos'])),
+   validarCampos
+], mostrarImagen)
 
 export default router;

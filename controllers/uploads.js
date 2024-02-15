@@ -73,3 +73,47 @@ export const actualizarImagen = async (req, res = response) => {
         modelo
     });
 }
+
+export const mostrarImagen = async (req, res = response) => {
+
+    const { coleccion, id } = req.params;
+
+    let modelo;
+
+    switch (coleccion) {
+        case 'users':
+            modelo = await User.findById(id);
+            if (!modelo) {
+                return res.status(400).json({
+                    msg: `No existe un usuario con el id ${id}`
+                });
+            }
+            break;
+        case 'productos':
+            modelo = await Producto.findById(id);
+            if (!modelo) {
+                return res.status(400).json({
+                    msg: `No existe un Producto con el id ${id}`
+                })
+            }
+            break;
+        default:
+            return res.status(500).json({ msg: 'Se me olvido validar esto' });
+    }
+
+    //Limpiar imagenes previas
+       if(modelo.img){
+            const __dirname = path.dirname(__filename);
+            // borrar imagen del servidor
+            const pathImagen = path.join(__dirname, '../uploads', coleccion, modelo.img);
+            
+            if(fs.existsSync(pathImagen)){
+               return res.sendFile(pathImagen);
+            }
+       }
+
+    res.json({
+        msg: 'Falta placeholder'
+    });
+
+}
