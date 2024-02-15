@@ -20,3 +20,13 @@ export const cargarArchivo = async (req, res = response) => {
 
     }
 }
+
+export const actualizarImagen = async (req, res = response) => {
+
+    const { coleccion, id } = req.params;
+
+    res.json({
+        coleccion,
+        id
+    });
+}
