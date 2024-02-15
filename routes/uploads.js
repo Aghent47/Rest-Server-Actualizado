@@ -6,7 +6,7 @@ import { cargarArchivo } from '../controllers/uploads.js';
 const router = express.Router();
 
  router.post('/', [
-    
+
  ],cargarArchivo);
 
 

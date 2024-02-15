@@ -7,6 +7,7 @@ import routerCategorias from '../routes/categorias.js';
 import routerProductos from '../routes/productos.js';
 import routerBuscar from '../routes/buscar.js';
 import reuterUploads from '../routes/uploads.js';
+import fileUpload from 'express-fileupload';
 
 import {dbConnection}  from '../database/config.js'; // importar la conexion a la base de datos desde 'database/conf
 export class Server{
@@ -49,6 +50,12 @@ export class Server{
 
         // Read and parse body
         this.app.use(express.json());
+
+        // fileUpload - para manejar la carga de archivos.
+        this.app.use(fileUpload({
+            useTempFiles : true,
+            tempFileDir : '/tmp/'
+        }));
     }
 
     routes(){
