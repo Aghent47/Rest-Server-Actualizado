@@ -12,15 +12,35 @@ export const cargarArchivo = async (req, res = response) => {
 
     const { archivo } = req.files
     const __dirname = path.dirname(__filename);
-    const uploadPath = path.join( __dirname, '../uploads/', archivo.name);
 
-    archivo.mv(uploadPath, (err) => {
-        if (err) {
-            return res.status(500).json(err);
-        }
-        res.json({
-            msg: 'File uploaded to ' + uploadPath
+    const newNameFile = archivo.name.split('.');
+    console.log(newNameFile);
+
+    //sacar extension del archivo
+    const extension = newNameFile[newNameFile.length - 1];
+
+
+    //validar la extencion
+    const extencionesValidas = ['png', 'jpg', 'jpeg', 'gif'];
+
+    if (!extencionesValidas.includes(extension)) {
+        return res.status(400).json({
+            msg: `La extension ${extension} no es permitida, las permitidas son ${extencionesValidas}`
         });
-    });
+
+    }
+
+
+
+    // const uploadPath = path.join( __dirname, '../uploads/', archivo.name);
+
+    // archivo.mv(uploadPath, (err) => {
+    //     if (err) {
+    //         return res.status(500).json(err);
+    //     }
+    //     res.json({
+    //         msg: 'File uploaded to ' + uploadPath
+    //     });
+    // });
 
 }
