@@ -2,6 +2,8 @@ import { response } from "express";
 import { fileURLToPath } from 'url';
 import path from 'path';
 
+import { v4 as uuidv4 } from 'uuid';
+
 const __filename = fileURLToPath(import.meta.url);
 export const cargarArchivo = async (req, res = response) => {
 
@@ -29,18 +31,17 @@ export const cargarArchivo = async (req, res = response) => {
         });
 
     }
+     
+     const nameTemporalFile = uuidv4() + '.' + extension;
+     const uploadPath = path.join( __dirname, '../uploads/', nameTemporalFile);
 
-
-
-    // const uploadPath = path.join( __dirname, '../uploads/', archivo.name);
-
-    // archivo.mv(uploadPath, (err) => {
-    //     if (err) {
-    //         return res.status(500).json(err);
-    //     }
-    //     res.json({
-    //         msg: 'File uploaded to ' + uploadPath
-    //     });
-    // });
+     archivo.mv(uploadPath, (err) => {
+         if (err) {
+             return res.status(500).json(err);
+         }
+         res.json({
+             msg: 'File uploaded to ' + uploadPath
+         });
+     });
 
 }
