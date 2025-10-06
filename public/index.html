@@ -1,73 +1,186 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-full">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Google Sing-in</title>
+    <title>Google Sign in</title>
+    <meta name="color-scheme" content="light dark">
+    <meta name="theme-color" content="#0ea5e9">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'ui-sans-serif', 'system-ui', 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', 'Apple Color Emoji', 'Segoe UI Emoji']
+                    },
+                    colors: {
+                        primary: {
+                            DEFAULT: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1'
+                        },
+                        surface: {
+                            light: '#ffffff',
+                            dark: '#0b1220'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Minimal helpers for geometric transitions */
+        .geo-bg:before,
+        .geo-bg:after{content:"";position:absolute;border-radius:9999px;transition:transform 700ms cubic-bezier(.2,.8,.2,1),opacity 700ms}
+        .geo-bg:before{width:32rem;height:32rem;background:radial-gradient(closest-side,rgba(14,165,233,.35),transparent 70%);filter:blur(2px)}
+        .geo-bg:after{width:20rem;height:20rem;background:conic-gradient(from 90deg,rgba(99,102,241,.35),rgba(16,185,129,.35),rgba(14,165,233,.35));mix-blend-mode:screen}
+        .dark .geo-bg:before{background:radial-gradient(closest-side,rgba(56,189,248,.25),transparent 70%)}
+        .dark .geo-bg:after{opacity:.9}
+        
+    </style>
 </head>
-<body>
-    <h1>Google Sing-in</h1>
-    <hr>
+<body class="h-full bg-surface-light text-slate-800 selection:bg-primary/20 selection:text-slate-900 dark:bg-surface-dark dark:text-slate-100">
+    <div id="app" class="relative min-h-full overflow-hidden">
+        <div aria-hidden="true" class="geo-bg pointer-events-none absolute inset-0 -z-10">
+        </div>
 
-    <div id="g_id_onload"
-        data-client_id="626617141692-knssnikg7rdqedfsf03sjlkkk65um3gl.apps.googleusercontent.com"
-        data-auto_prompt="false"
-        data-callback="handleCredentialResponse">
-    </div>
-    <div class="g_id_signin"
-        data-type="standard"
-        data-size="large"
-        data-theme="outline"
-        data-text="sign_in_with"
-        data-shape="rectangular"
-        data-logo_alignment="left">
-    </div>
+        <header class="px-4 py-4 sm:px-6 lg:px-8">
+            <div class="mx-auto max-w-7xl flex items-center justify-between">
+                <h1 class="text-xl sm:text-2xl font-semibold tracking-tight">Auth Portal</h1>
+                <div class="flex items-center gap-3">
+                    <button id="theme-toggle" type="button" aria-label="Toggle dark mode"
+                        class="inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-slate-800 bg-white/70 shadow-sm ring-1 ring-slate-200 hover:bg-white hover:shadow transition-all dark:bg-slate-900/60 dark:text-slate-100 dark:ring-slate-700 dark:hover:bg-slate-900">
+                        <span class="block dark:hidden">Dark</span>
+                        <span class="hidden dark:block">Light</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4 dark:hidden">
+                            <path d="M12 18a6 6 0 100-12 6 6 0 000 12z"/><path fill-rule="evenodd" d="M12 2a.75.75 0 01.75.75V5a.75.75 0 01-1.5 0V2.75A.75.75 0 0112 2zm0 17a.75.75 0 01.75.75V22a.75.75 0 01-1.5 0v-2.25A.75.75 0 0112 19zm10-7a.75.75 0 01-.75.75H19a.75.75 0 010-1.5h2.25A.75.75 0 0122 12zM5 12a.75.75 0 01-.75.75H2a.75.75 0 010-1.5h2.25A.75.75 0 015 12zm13.657 7.657a.75.75 0 01-1.06 0l-1.59-1.59a.75.75 0 111.06-1.06l1.59 1.59a.75.75 0 010 1.06zM7.994 7.994a.75.75 0 01-1.06 0L5.343 6.403a.75.75 0 111.06-1.06l1.59 1.59a.75.75 0 010 1.06zM18.657 6.403a.75.75 0 00-1.06 0l-1.59 1.59a.75.75 0 101.06 1.06l1.59-1.59a.75.75 0 000-1.06zM7.994 16.006a.75.75 0 10-1.06 1.06l-1.59 1.59a.75.75 0 101.06 1.06l1.59-1.59a.75.75 0 000-1.06z" clip-rule="evenodd"/>
+                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4 hidden dark:block">
+                            <path fill-rule="evenodd" d="M9.528 1.718a.75.75 0 01.162.819A8.998 8.998 0 1019.463 14.31a.75.75 0 01.981-.981A10.498 10.498 0 018.71 2.88a.75.75 0 01.819-.162z" clip-rule="evenodd"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </header>
 
-    <button id="google_Sing_out"> Singout </button>
+        <main class="px-4 sm:px-6 lg:px-8">
+            <div class="mx-auto max-w-7xl py-10 sm:py-14 lg:py-20">
+                <div class="flex justify-center items-center min-h-[60vh]">
+                    <section class="w-full max-w-md">
+                        <div class="relative isolate overflow-hidden rounded-2xl bg-white/80 ring-1 ring-slate-200 shadow-xl p-6 sm:p-8 md:p-10 backdrop-blur transition-all hover:shadow-2xl dark:bg-slate-900/70 dark:ring-slate-700">
+                            <div class="absolute -left-10 -top-10 h-32 w-32 rotate-12 rounded-xl bg-primary/20 blur-xl dark:bg-primary/30"></div>
+                            <div class="absolute -bottom-12 -right-12 h-40 w-40 -rotate-6 rounded-full bg-indigo-400/20 blur-2xl dark:bg-indigo-500/25"></div>
+
+                            <h2 class="text-2xl sm:text-3xl font-semibold tracking-tight">Google Sign in</h2>
+                            <p class="mt-2 text-sm sm:text-base text-slate-600 dark:text-slate-300">Accede de forma segura con tu cuenta de Google. Tu sesión se mantendrá cifrada y privada.</p>
+
+                            <div class="mt-6 flex flex-col items-stretch gap-5">
+                                <div id="g_id_onload"
+                                    data-client_id="626617141692-knssnikg7rdqedfsf03sjlkkk65um3gl.apps.googleusercontent.com"
+                                    data-auto_prompt="false"
+                                    data-callback="handleCredentialResponse">
+                                </div>
+                                <div class="flex justify-center">
+                                    <div class="g_id_signin"
+                                        data-type="standard"
+                                        data-size="large"
+                                        data-theme="filled_blue"
+                                        data-text="continue_with"
+                                        data-shape="pill"
+                                        data-width="280"
+                                        data-logo_alignment="left"></div>
+                                </div>
+                                <p class="text-xs text-center text-slate-500 dark:text-slate-400">Utilizamos Google para una autenticación segura.</p>
+
+                                <button id="google_Sing_out" type="button"
+                                    class="inline-flex items-center justify-center rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-white shadow-sm ring-1 ring-inset ring-primary-700 hover:bg-primary-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary-600 active:scale-[.98] transition-all dark:ring-0">
+                                    Sign out
+                                </button>
+                            </div>
+                        </div>
+                    </section>
+
+                   
+                </div>
+            </div>
+        </main>
+
+        <footer class="px-4 sm:px-6 lg:px-8 pb-10">
+            <div class="mx-auto max-w-7xl text-center text-xs text-slate-500 dark:text-slate-400">
+                <span>&copy; <span id="year"></span> Auth Portal</span>
+            </div>
+        </footer>
+    </div>
 
     <script src="https://accounts.google.com/gsi/client" async></script>
 
     <script>
+        // Theme: initialize from localStorage or system preference
+        (function initTheme(){
+            try{
+                const stored = localStorage.getItem('theme');
+                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                const root = document.documentElement;
+                if(stored === 'dark' || (!stored && prefersDark)){
+                    root.classList.add('dark');
+                } else {
+                    root.classList.remove('dark');
+                }
+            }catch(e){/* noop */}
+        })();
+
+        // Header year
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Dark mode toggle with geometric transition motion
+        const themeToggle = document.getElementById('theme-toggle');
+        themeToggle?.addEventListener('click', () => {
+            const root = document.documentElement;
+            const enable = !root.classList.contains('dark');
+            root.classList.toggle('dark');
+            try{ localStorage.setItem('theme', enable ? 'dark' : 'light'); }catch(e){}
+
+            // animate background blobs geometrically
+            const gb = document.querySelector('.geo-bg');
+            if(gb){
+                gb.style.setProperty('transform','translate3d(0,0,0)');
+                gb.animate([
+                    { transform: 'translate3d(0,0,0) rotate(0deg)' },
+                    { transform: 'translate3d(2%, -2%, 0) rotate(8deg)' },
+                    { transform: 'translate3d(0,0,0) rotate(0deg)' }
+                ], { duration: 750, easing: 'cubic-bezier(.2,.8,.2,1)' });
+            }
+        });
+
         function handleCredentialResponse(response) {
-
-        // Google Token 
-        // console.log('ID_TOKEN', response.credential);
-        const body = {id_token: response.credential}
-
-        fetch(`${window.location.origin}/api/auth/google`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(body)
-        })
-            .then(res => res.json())
-            .then(data => {
-
-                console.log(data);
-                localStorage.setItem('mail',data.usuario.mail)
+            const body = {id_token: response.credential}
+            fetch(`${window.location.origin}/api/auth/google`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body)
             })
-            .catch(err => {
-                console.log(err);
-            });
-            
+                .then(res => res.json())
+                .then(data => {
+                    console.log(data);
+                    localStorage.setItem('mail', data.usuario.mail)
+                })
+                .catch(err => { console.log(err); });
         }
-
 
         const button = document.getElementById('google_Sing_out');
         button.onclick = () => {
-
             google.accounts.id.disableAutoSelect();
-
-            google.accounts.id.revoke( localStorage.getItem( 'mail' ), done => {
-
+            google.accounts.id.revoke( localStorage.getItem('mail'), () => {
                 localStorage.clear();
                 location.reload();
-
             });
         }
-
-      </script>
+    </script>
 </body>
 </html>
