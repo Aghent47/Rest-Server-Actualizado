@@ -17,7 +17,7 @@ router.post('/',[
     check('mail').custom(emailExiste),
     // check('rol', 'no es un rol valido').isIn(['ADMIN_ROLES', 'USER_ROLEs']),
 
-    check('rol').custom(esRolevalido),
+    // check('rol').custom(esRolevalido),
     
     validarCampos,
 
